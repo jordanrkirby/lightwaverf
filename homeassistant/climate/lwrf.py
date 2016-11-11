@@ -63,7 +63,7 @@ class LWRFHeating(ClimateDevice):
 	def icon(self):
 		return "mdi:radiator"
 
-    @property
+	@property
 	def state(self):
 		try:
 			return self._heating.current
