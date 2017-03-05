@@ -1,4 +1,5 @@
-from homeassistant.components.discovery import load_platform
+#from homeassistant.components.discovery import load_platform
+from homeassistant.helpers.discovery import load_platform
 import lightwaverf
 #import homeassistant.loader as loader
 import logging

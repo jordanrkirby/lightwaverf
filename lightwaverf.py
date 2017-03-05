@@ -300,7 +300,7 @@ class LWRFServer:
         if (self.settings['deviceStatus'][device_number].lower() == 'm' or self.settings['deviceStatus'][device_number] == 'o' ):
             code = ""
 
-        logging.info ("Enqueue: Switch " + self.get_device_name(device_number) + " in " + self.get_room_name(device_number) + " to " + code)
+        logging.debug ("Enqueue: Switch " + self.get_device_name(device_number) + " in " + self.get_room_name(device_number) + " to " + code)
         command = "!" + self.get_device_code(device_number) + code + "|" + self.get_device_name(device_number) + "|" +state
         logging.debug(command)
         logging.debug(status)
@@ -327,14 +327,14 @@ class LWRFServer:
             if data[4:7] == "ERR":
                 logging.error("Command %s failed: %s" % (data[0:3],repr(data[4:])))
             else:
-                logging.info ("Command %s returned %s" % (data[0:3],repr(data[4:])))
+                logging.debug ("Command %s returned %s" % (data[0:3],repr(data[4:])))
             return "REPLY", False
         elif (data[0:3] == "*!{"):
             d = ast.literal_eval(data[2:])
             for callback in self._observers:
                 if 'fn' in d:
                     if d['fn'] == callback[0] and callback[1] in d:
-                        logging.info('Monitored Dictionary Received: %s',data);
+                        logging.debug('Monitored Dictionary Received: %s',data);
                         if callback[2] == d[callback[1]]:
                             callback[3](d)
                 else:
@@ -692,7 +692,7 @@ class LightwaveRFEnergy(LightwaveRFSensor):
     def update_data(self, data):
         self.current = data['cUse']
         self.today = data['todUse']
-        logging.info("Updated " + self.name + "; Today: " + str(self.today))
+        logging.debug("Updated " + self.name + "; Today: " + str(self.today))
 
     @property
     def name(self):
@@ -781,7 +781,7 @@ class LightwaveRFValve(LightwaveRFHeating):
         self.state = data['state']
         self.battery = data['batt']
 
-        logging.info("Updated " + self.name + "; Temp: " + str(self.current))
+        logging.debug("Updated " + self.name + "; Temp: " + str(self.current))
 
 class LightwaveRFThermostat(LightwaveRFHeating):
     def __init__(self, server, serial, name, device_number, room_name):
@@ -793,7 +793,7 @@ class LightwaveRFThermostat(LightwaveRFHeating):
         self.state = data['state']
         self.battery = data['batt']
 
-        logging.info("Updated " + self.name + "; Temp: " + str(self.current))
+        logging.debug("Updated " + self.name + "; Temp: " + str(self.current))
 
 class LightwaveRFRoom:
     image_root = "https://control-api.lightwaverf.com/assets/public/room/"
